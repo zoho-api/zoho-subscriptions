@@ -1,0 +1,47 @@
+{
+  "name": "zoho/subscriptions",
+  "description": "ZF2 module to interact with Zoho Subscriptions API",
+  "keywords": [
+    "zoho", "subscription", "plan", "api", "rest"
+  ],
+  "support": {
+    "source": "https://github.com/jguittard/zoho-subscriptions",
+    "issues": "https://github.com/jguittard/zoho-subscriptions/issues"
+  },
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Julien Guittard",
+      "email": "julien.guittard@me.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "zendframework/zend-inputfilter": "~2.5",
+    "zendframework/zend-servicemanager": "~2.5",
+    "zendframework/zend-modulemanager": "~2.5",
+    "zendframework/zend-http": "~2.5",
+    "zendframework/zend-json": "~2.5"
+  },
+  "require-dev": {
+    "fabpot/php-cs-fixer": "1.7.*",
+    "squizlabs/php_codesniffer": "~2.0",
+    "phpunit/PHPUnit": "~4.5.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev",
+      "dev-develop": "1.0-dev"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Zoho\\Subscriptions\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ZohoTest\\Subscriptions\\": "tests/"
+    }
+  }
+}
