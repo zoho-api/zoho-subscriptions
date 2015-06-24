@@ -38,7 +38,10 @@
   "autoload": {
     "psr-4": {
       "Zoho\\Subscriptions\\": "src/"
-    }
+    },
+    "classmap": [
+      "Module.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
