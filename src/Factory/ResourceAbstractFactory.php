@@ -96,12 +96,17 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $zohoConfig = $config['zoho'];
         $resourceConfig = $config['zoho']['resources'][$requestedName];
 
-        $httpClient = new Client();
+        $clientConfig = [
+            'adapter'      => 'Zend\Http\Client\Adapter\Socket',
+            'ssltransport' => 'tls',
+        ];
+
+        $httpClient = new Client(null, $clientConfig);
         $httpClient->setHeaders(array(
             'Content-Type' => 'application/json;charset=UTF-8',
             'X-com-zoho-subscriptions-organizationid' => $zohoConfig['organization_id'],
             'Authorization' => 'Zoho-authtoken ' . $zohoConfig['auth_token'],
-        ));
+        ))->set;
 
         $resource = new Resource($httpClient);
         $resource->setPath($resourceConfig['path']);
