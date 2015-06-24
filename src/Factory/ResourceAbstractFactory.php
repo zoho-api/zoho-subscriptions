@@ -106,7 +106,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
             'Content-Type' => 'application/json;charset=UTF-8',
             'X-com-zoho-subscriptions-organizationid' => $zohoConfig['organization_id'],
             'Authorization' => 'Zoho-authtoken ' . $zohoConfig['auth_token'],
-        ))->set;
+        ));
 
         $resource = new Resource($httpClient);
         $resource->setPath($resourceConfig['path']);

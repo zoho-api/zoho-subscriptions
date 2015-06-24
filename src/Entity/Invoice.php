@@ -13,26 +13,76 @@ namespace Zoho\Subscriptions\Entity;
  */
 class Invoice implements EntityInterface
 {
+    /**
+     *
+     *
+     * @var string
+     */
     protected $invoiceId;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $number;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $status;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $invoiceDate;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $dueDate;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $customerId;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $customerName;
 
+    /**
+     *
+     *
+     * @var string
+     */
     protected $email;
 
     /**
-     * @var array
+     *
+     *
+     * @var InvoiceItem[]
      */
     protected $invoiceItems;
 
+    protected $total;
 
+    protected $paymentMade;
+
+    protected $balance;
+
+    protected $creditsApplied;
+
+    protected $writeOffAmount;
 }
