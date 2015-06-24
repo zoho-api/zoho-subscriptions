@@ -18,6 +18,7 @@
   "require": {
     "php": ">=5.5",
     "zendframework/zend-inputfilter": "~2.5",
+    "zendframework/zend-i18n": "~2.5",
     "zendframework/zend-servicemanager": "~2.5",
     "zendframework/zend-modulemanager": "~2.5",
     "zendframework/zend-http": "~2.5",

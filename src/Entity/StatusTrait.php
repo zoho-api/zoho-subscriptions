@@ -16,14 +16,14 @@ trait StatusTrait
     /**
      * Status of the item. It can either be active or inactive.
      *
-     * @var string
+     * @var boolean
      */
     protected $status;
 
     /**
      * Get the status
      *
-     * @return string
+     * @return boolean
      */
     public function getStatus()
     {
@@ -33,12 +33,22 @@ trait StatusTrait
     /**
      * Set the status
      *
-     * @param string $status
+     * @param boolean $status
      * @return StatusTrait
      */
     public function setStatus($status)
     {
-        $this->status = $status;
+        $this->status = (bool)$status;
         return $this;
+    }
+
+    /**
+     * Is item active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return ($this->status == 'active');
     }
 }

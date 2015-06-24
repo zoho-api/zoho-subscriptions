@@ -6,17 +6,13 @@
 
 namespace Zoho\Subscriptions\Entity;
 
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterAwareTrait;
-
 /**
  * Class Product
  *
  * @package Zoho\Subscriptions\Entity
  */
-class Product implements InputFilterAwareInterface
+class Product implements EntityInterface
 {
-    use InputFilterAwareTrait;
     use TimestampableTrait;
     use StatusTrait;
 
