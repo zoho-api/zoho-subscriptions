@@ -54,7 +54,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
 
         if (!isset($config[$requestedName])
             || !isset($config[$requestedName]['path'])
-            || !isset($config[$requestedName['input-filter']])
+            || !isset($config[$requestedName]['input-filter'])
         ) {
             $this->lookupCache[$requestedName] = false;
             return false;
