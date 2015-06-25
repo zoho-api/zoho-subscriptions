@@ -96,10 +96,13 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $zohoConfig = $config['zoho'];
         $resourceConfig = $config['zoho']['resources'][$requestedName];
 
-        $clientConfig = [
-            'adapter'      => 'Zend\Http\Client\Adapter\Socket',
-            'ssltransport' => 'tls',
-        ];
+        $opensslCapath = ini_get('openssl.capath');
+
+        if (!empty($opensslCapath)) {
+            $clientConfig = ['sslcapath' => $opensslCapath];
+        } else {
+            $clientConfig = ['sslcapath' => $config['ssl_config']['sslcapath']];
+        }
 
         $httpClient = new Client(null, $clientConfig);
         $httpClient->setHeaders(array(

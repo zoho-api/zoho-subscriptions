@@ -5,6 +5,9 @@
  */
 
 return [
+    'ssl_config' => [
+        'sslcapath' => '/etc/ssl/certs'
+    ],
     'zoho' => [
         'organization_id' => '',
         'auth_token' => '',
