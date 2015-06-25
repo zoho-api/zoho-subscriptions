@@ -905,13 +905,75 @@ return [
                 'path' => '/subscriptions',
                 'input-filter' => [
                     0 => [
-                        'name' => '',
+                        'name' => 'name',
+                        'required' => true,
+                        'validators' => [
+                            0 => [
+                                'name' => 'Zend\Validator\StringLength',
+                                'options' => [
+                                    'min' => 1,
+                                ],
+                            ],
+                        ],
+                        'filters' => [
+                            0 => [
+                                'name' => 'Zend\Filter\StringTrim',
+                            ],
+                            1 => [
+                                'name' => 'Zend\Filter\StripTags',
+                            ],
+                        ],
+                    ],
+                    1 => [
+                        'name' => 'customer',
                         'required' => true,
                         'validators' => [
 
                         ],
                         'filters' => [
 
+                        ],
+                    ],
+                    2 => [
+                        'name' => 'amount',
+                        'required' => true,
+                        'validators' => [
+                            0 => [
+                                'name' => 'Zend\I18n\Validator\IsFloat',
+                                'options' => [
+                                    'locale' => 'en_US',
+                                ],
+                            ]
+                        ],
+                        'filters' => [
+                            0 => [
+                                'name' => 'Zend\Filter\StringTrim',
+                            ],
+                            1 => [
+                                'name' => 'Zend\Filter\StripTags',
+                            ],
+                        ],
+                    ],
+                    3 => [
+                        'name' => 'productId',
+                        'required' => true,
+                        'validators' => [
+                            0 => [
+                                'name' => 'Zend\Validator\Digits',
+                                'options' => [],
+                            ],
+                        ],
+                        'filters' => [
+                            0 => [
+                                'name' => 'Zend\Filter\StringTrim',
+                            ],
+                            1 => [
+                                'name' => 'Zend\Filter\StripTags',
+                            ],
+                            2 => [
+                                'name' => 'Zend\Filter\Digits',
+                                'options' => [],
+                            ],
                         ],
                     ],
                 ]
