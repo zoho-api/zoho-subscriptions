@@ -101,7 +101,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         if (!empty($opensslCapath)) {
             $clientConfig = ['sslcapath' => $opensslCapath];
         } else {
-            $clientConfig = ['sslcapath' => $config['zoho']['ssl_config']['sslcapath']];
+            $clientConfig = ['sslcapath' => $zohoConfig['ssl_config']['sslcapath']];
         }
 
         $httpClient = new Client(null, $clientConfig);
