@@ -125,7 +125,7 @@ class Resource implements InputFilterAwareInterface
     public function fetchAll()
     {
         $this->httpClient->setMethod(Http\Request::METHOD_GET)
-                         ->setUri(self::ZOHO_API_ENDPOINT . '/' . $this->getPath());
+                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath());
 
         return $this->httpClient->send();
     }
@@ -137,7 +137,7 @@ class Resource implements InputFilterAwareInterface
     public function fetch($id)
     {
         $this->httpClient->setMethod(Http\Request::METHOD_GET)
-                         ->setUri(self::ZOHO_API_ENDPOINT . '/' . $this->getPath() . '/' . $id);
+                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
 
         return $this->processRequest();
 
@@ -150,7 +150,7 @@ class Resource implements InputFilterAwareInterface
     public function create(EntityInterface $entity)
     {
         $this->httpClient->setMethod(Http\Request::METHOD_POST)
-                         ->setUri(self::ZOHO_API_ENDPOINT . '/' . $this->getPath());
+                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath());
         $this->processData($entity);
         return $this->processRequest();
     }
@@ -163,7 +163,7 @@ class Resource implements InputFilterAwareInterface
     public function update($id, EntityInterface $entity)
     {
         $this->httpClient->setMethod(Http\Request::METHOD_PUT)
-                         ->setUri(self::ZOHO_API_ENDPOINT . '/' . $this->getPath() . '/' . $id);
+                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
         $this->processData($entity);
         return $this->processRequest();
     }
@@ -175,7 +175,7 @@ class Resource implements InputFilterAwareInterface
     public function delete($id)
     {
         $this->httpClient->setMethod(Http\Request::METHOD_DELETE)
-                         ->setUri(self::ZOHO_API_ENDPOINT . '/' . $this->getPath() . '/' . $id);
+                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
         $response = $this->httpClient->send();
         if ($response->isSuccess()) {
             return true;
