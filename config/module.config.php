@@ -5,9 +5,6 @@
  */
 
 return [
-    'ssl_config' => [
-        'sslcapath' => '/etc/ssl/certs'
-    ],
     'service_manager' => [
         'invokables' => [
             'Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy' => 'Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy',
@@ -17,6 +14,9 @@ return [
         ],
     ],
     'zoho' => [
+        'ssl_config' => [
+            'sslcapath' => '/etc/ssl/certs'
+        ],
         'resources' => [
             'Zoho\Subscriptions\Resource\Product' => [
                 'path' => '/products',
