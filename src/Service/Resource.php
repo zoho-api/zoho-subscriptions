@@ -220,22 +220,33 @@ class Resource implements InputFilterAwareInterface
             $data = ArrayUtils::iteratorToArray($data);
         }
 
-        if (!is_array($data)) {
-            // throw 422
+        $json = json_encode($data);
+
+        if (false === $json) {
+            throw new DomainException("Unprocessable entity", 422);
         }
 
-        $fields = http_build_query($data);
-
         curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath());
-        curl_setopt($this->curl, CURLOPT_POST, count($data));
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($this->curl, CURLOPT_POST, true);
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $json);
 
-        $result = curl_exec($this->curl);
-        $result = json_decode($result);
+
+        $response = curl_exec($this->curl);
+        $result = json_decode($response);
+        $api_response_info = curl_getinfo($this->curl);
         curl_close($this->curl);
 
-        $entityName = $this->getEntityName();
-        return $result->$entityName;
+        if ($api_response_info['http_code'] == 201) {
+            //print_r($result);exit;
+            $entityClass = $this->getEntityClass();
+            $entityName = $this->getEntityName();
+            $entity = new $entityClass;
+            $result = $result->$entityName;
+            $data = (array)$result;
+            $entity = $this->getHydrator()->hydrate($data, $entity);
+            return $entity;
+        }
+        throw new DomainException($result->message, $api_response_info['http_code']);
 
     }
 
