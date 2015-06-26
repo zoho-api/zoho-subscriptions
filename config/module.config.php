@@ -364,30 +364,8 @@ return [
                 'path' => '/customers',
                 'input-filter' => [
                     0 => [
-                        'name' => 'customerId',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\Validator\Digits',
-                                'options' => [],
-                            ],
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                            2 => [
-                                'name' => 'Zend\Filter\Digits',
-                                'options' => [],
-                            ],
-                        ],
-                    ],
-                    1 => [
                         'name' => 'displayName',
-                        'required' => false,
+                        'required' => true,
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\Validator\StringLength',
@@ -414,7 +392,6 @@ return [
                                 'name' => 'Zend\Validator\StringLength',
                                 'options' => [
                                     'min' => 1,
-                                    'max' => 255,
                                 ],
                             ]
                         ],
@@ -435,7 +412,6 @@ return [
                                 'name' => 'Zend\Validator\StringLength',
                                 'options' => [
                                     'min' => 1,
-                                    'max' => 255,
                                 ],
                             ]
                         ],
@@ -450,7 +426,7 @@ return [
                     ],
                     4 => [
                         'name' => 'email',
-                        'required' => false,
+                        'required' => true,
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\Validator\StringLength',
@@ -558,49 +534,7 @@ return [
                     ],
                     9 => [
                         'name' => 'currencyCode',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\Validator\StringLength',
-                                'options' => [
-                                    'min' => 1,
-                                    'max' => 255,
-                                ],
-                            ]
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    10 => [
-                        'name' => 'currencySymbol',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\Validator\StringLength',
-                                'options' => [
-                                    'min' => 1,
-                                    'max' => 255,
-                                ],
-                            ]
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    11 => [
-                        'name' => 'currencyId',
-                        'required' => false,
+                        'required' => true,
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\Validator\StringLength',
@@ -625,66 +559,6 @@ return [
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\I18n\Validator\IsInt',
-                                'options' => [
-                                    'locale' => 'en_US',
-                                ],
-                            ]
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    13 => [
-                        'name' => 'unusedCredits',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\I18n\Validator\IsFloat',
-                                'options' => [
-                                    'locale' => 'en_US',
-                                ],
-                            ]
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    14 => [
-                        'name' => 'balance',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\I18n\Validator\IsFloat',
-                                'options' => [
-                                    'locale' => 'en_US',
-                                ],
-                            ]
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    15 => [
-                        'name' => 'outstanding',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\I18n\Validator\IsFloat',
                                 'options' => [
                                     'locale' => 'en_US',
                                 ],
