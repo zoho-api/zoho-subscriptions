@@ -32,11 +32,6 @@ class Resource implements InputFilterAwareInterface
     protected $errors = [];
 
     /**
-     * @var Http\Client
-     */
-    protected $httpClient;
-
-    /**
      * @var mixed
      */
     protected $curl;
@@ -66,6 +61,9 @@ class Resource implements InputFilterAwareInterface
      */
     protected $hydrator;
 
+    /**
+     * @return bool
+     */
     public function hasErrors()
     {
         return count($this->errors) > 0;
@@ -281,44 +279,5 @@ class Resource implements InputFilterAwareInterface
         curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
         curl_exec($this->curl);
         return true;
-    }
-
-    /**
-     * @param EntityInterface $entity
-     */
-    protected function processData(EntityInterface $entity)
-    {
-        $data = $this->getHydrator()->extract($entity);
-        $this->getInputFilter()->setData($data);
-
-        if (!$this->getInputFilter()->isValid()) {
-            $this->errors = $this->getInputFilter()->getMessages();
-            throw new DomainException("Unprocessable entity", 422);
-        }
-
-        $this->httpClient->setRawBody(json_decode($data));
-    }
-
-    /**
-     * @return object
-     */
-    protected function processRequest()
-    {
-        $response = $this->httpClient->send();
-
-        if ($response->isSuccess()) {
-            $result = $response->getBody();
-            $entityClass= $this->getEntityClass();
-            $entity = $this->getHydrator()->hydrate((array)$result, new $entityClass);
-            return $entity;
-        } elseif ($response->isClientError() || $response->isServerError()) {
-            throw new DomainException(
-                sprintf(
-                    'An error occured while requesting Zoho API for %s',
-                    __METHOD__
-                ),
-                $response->getStatusCode()
-            );
-        }
     }
 }
