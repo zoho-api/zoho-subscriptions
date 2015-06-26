@@ -124,6 +124,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
 
         $entityClass = str_replace('Resource', 'Entity', $requestedName);
         $resource->setEntityClass($entityClass);
+        $resource->setEntityName($resourceConfig['entityName']);
 
         $inputFilterFactory = new InputFilterFactory();
         $inputFilter = $inputFilterFactory->createInputFilter($resourceConfig['input-filter']);

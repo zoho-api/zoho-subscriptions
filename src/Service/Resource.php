@@ -55,6 +55,11 @@ class Resource implements InputFilterAwareInterface
     protected $entityClass;
 
     /**
+     * @var string
+     */
+    protected $entityName;
+
+    /**
      * @var HydratorInterface
      */
     protected $hydrator;
@@ -83,6 +88,28 @@ class Resource implements InputFilterAwareInterface
     public function setCollectionName($collectionName)
     {
         $this->collectionName = $collectionName;
+        return $this;
+    }
+
+    /**
+     * Get the entityName
+     *
+     * @return string
+     */
+    public function getEntityName()
+    {
+        return $this->entityName;
+    }
+
+    /**
+     * Set the entityName
+     *
+     * @param string $entityName
+     * @return Resource
+     */
+    public function setEntityName($entityName)
+    {
+        $this->entityName = $entityName;
         return $this;
     }
 
@@ -169,10 +196,12 @@ class Resource implements InputFilterAwareInterface
      */
     public function fetch($id)
     {
-        $this->httpClient->setMethod(Http\Request::METHOD_GET)
-                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
-
-        return $this->processRequest();
+        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
+        $result = curl_exec($this->curl);
+        $result = json_decode($result);
+        curl_close($this->curl);
+        $entityName = $this->getEntityName();
+        return $result->$entityName;
 
     }
 
