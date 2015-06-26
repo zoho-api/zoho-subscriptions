@@ -96,7 +96,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $zohoConfig = $config['zoho'];
         $resourceConfig = $config['zoho']['resources'][$requestedName];
 
-        $opensslCapath = ini_get('openssl.capath');
+        /*$opensslCapath = ini_get('openssl.capath');
 
         if (!empty($opensslCapath)) {
             $clientConfig = ['sslcapath' => $opensslCapath];
@@ -111,7 +111,14 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
             'Authorization' => 'Zoho-authtoken ' . $zohoConfig['auth_token'],
         ));
 
-        $resource = new Resource($httpClient);
+        $resource = new Resource($httpClient);*/
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Authorization: Zoho-authtoken ' . $zohoConfig['auth_token'],
+            'X-com-zoho-subscriptions-organizationid: ' . $zohoConfig['organization_id'],
+        ]);
+        $resource = new Resource($curl);
         $resource->setPath($resourceConfig['path']);
 
         $entityClass = str_replace('Resource', 'Entity', $requestedName);

@@ -35,6 +35,16 @@ class Resource implements InputFilterAwareInterface
     protected $httpClient;
 
     /**
+     * @var mixed
+     */
+    protected $curl;
+
+    /**
+     * @var string
+     */
+    protected $collectionName;
+
+    /**
      * @var string
      */
     protected $path;
@@ -52,6 +62,28 @@ class Resource implements InputFilterAwareInterface
     public function hasErrors()
     {
         return count($this->errors) > 0;
+    }
+
+    /**
+     * Get the collectionName
+     *
+     * @return string
+     */
+    public function getCollectionName()
+    {
+        return $this->collectionName;
+    }
+
+    /**
+     * Set the collectionName
+     *
+     * @param string $collectionName
+     * @return Resource
+     */
+    public function setCollectionName($collectionName)
+    {
+        $this->collectionName = $collectionName;
+        return $this;
     }
 
     /**
@@ -111,12 +143,11 @@ class Resource implements InputFilterAwareInterface
     /**
      * Constructor
      *
-     * @param Http\Client $httpClient
+     * @param $curl
      */
-    public function __construct(Http\Client $httpClient)
+    public function __construct($curl)
     {
-        $this->httpClient = $httpClient;
-        $this->httpClient->setUri(self::ZOHO_API_ENDPOINT);
+        $this->curl = $curl;
     }
 
     /**
@@ -124,10 +155,12 @@ class Resource implements InputFilterAwareInterface
      */
     public function fetchAll()
     {
-        $this->httpClient->setMethod(Http\Request::METHOD_GET)
-                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath());
-
-        return $this->httpClient->send();
+        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath());
+        $result = curl_exec($this->curl);
+        $result = json_decode($result);
+        curl_close($this->curl);
+        $collectioNName = $this->getCollectionName();
+        return $result->$collectioNName;
     }
 
     /**

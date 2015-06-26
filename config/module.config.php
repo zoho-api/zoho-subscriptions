@@ -20,6 +20,7 @@ return [
         'resources' => [
             'Zoho\Subscriptions\Resource\Product' => [
                 'path' => '/products',
+                'collectionName' => 'products',
                 'input-filter' => [
                     0 => [
                         'name' => 'name',
@@ -126,6 +127,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Plan' => [
                 'path' => '/plans',
+                'collectionName' => 'plans',
                 'input-filter' => [
                     0 => [
                         'name' => 'name',
@@ -332,6 +334,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Addon' => [
                 'path' => '/addons',
+                'collectionName' => 'addons',
                 'input-filter' => [
                     0 => [
                         'name' => '',
@@ -347,6 +350,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Coupon' => [
                 'path' => '/coupons',
+                'collectionName' => 'coupons',
                 'input-filter' => [
                     0 => [
                         'name' => '',
@@ -362,6 +366,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Customer' => [
                 'path' => '/customers',
+                'collectionName' => 'customers',
                 'input-filter' => [
                     0 => [
                         'name' => 'displayName',
@@ -625,6 +630,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\ContactPerson' => [
                 'path' => '/customers/:customer_id/contactpersons',
+                'collectionName' => 'contactpersons',
                 'input-filter' => [
                     0 => [
                         'name' => 'contactpersonId',
@@ -780,6 +786,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Subscription' => [
                 'path' => '/subscriptions',
+                'collectionName' => 'subscriptions',
                 'input-filter' => [
                     0 => [
                         'name' => 'name',
@@ -857,6 +864,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Invoice' => [
                 'path' => '/invoices',
+                'collectionName' => 'invoices',
                 'input-filter' => [
                     0 => [
                         'name' => '',
@@ -872,6 +880,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\Payment' => [
                 'path' => '/payments',
+                'collectionName' => 'payments',
                 'input-filter' => [
                     0 => [
                         'name' => '',
@@ -887,6 +896,7 @@ return [
             ],
             'Zoho\Subscriptions\Resource\HostedPage' => [
                 'path' => '/hostedpages',
+                'collectionName' => 'hostedpages',
                 'input-filter' => [
                     0 => [
                         'name' => '',
