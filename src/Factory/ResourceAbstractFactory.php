@@ -120,6 +120,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         ]);
         $resource = new Resource($curl);
         $resource->setPath($resourceConfig['path']);
+        $resource->setCollectionName($resourceConfig['collectionName']);
 
         $entityClass = str_replace('Resource', 'Entity', $requestedName);
         $resource->setEntityClass($entityClass);

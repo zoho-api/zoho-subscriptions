@@ -159,8 +159,8 @@ class Resource implements InputFilterAwareInterface
         $result = curl_exec($this->curl);
         $result = json_decode($result);
         curl_close($this->curl);
-        $collectioNName = $this->getCollectionName();
-        return $result->$collectioNName;
+        $collectionName = $this->getCollectionName();
+        return $result->$collectionName;
     }
 
     /**
