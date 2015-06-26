@@ -96,22 +96,6 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $zohoConfig = $config['zoho'];
         $resourceConfig = $config['zoho']['resources'][$requestedName];
 
-        /*$opensslCapath = ini_get('openssl.capath');
-
-        if (!empty($opensslCapath)) {
-            $clientConfig = ['sslcapath' => $opensslCapath];
-        } else {
-            $clientConfig = ['sslcapath' => $zohoConfig['ssl_config']['sslcapath']];
-        }
-
-        $httpClient = new Client(null, $clientConfig);
-        $httpClient->setHeaders(array(
-            'Content-Type' => 'application/json;charset=UTF-8',
-            'X-com-zoho-subscriptions-organizationid' => $zohoConfig['organization_id'],
-            'Authorization' => 'Zoho-authtoken ' . $zohoConfig['auth_token'],
-        ));
-
-        $resource = new Resource($httpClient);*/
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
@@ -130,14 +114,14 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $inputFilter = $inputFilterFactory->createInputFilter($resourceConfig['input-filter']);
         $resource->setInputFilter($inputFilter);
 
-        $hydrator = new ClassMethods(true);
+        $hydratorManager = $serviceLocator->get('HydratorManager');
 
-        if (isset($resourceConfig['strategies']) && is_array($resourceConfig['strategies'])) {
-            foreach ($resourceConfig['strategies'] as $field => $strategy) {
-                if ($serviceLocator->has($strategy)) {
-                    $hydrator->addStrategy($field, $serviceLocator->get($strategy));
-                }
-            }
+        $hydratorName = str_replace('Entity', 'Hydrator', $entityClass);
+
+        if ($hydratorManager->hast($hydratorName)) {
+            $hydrator = $hydratorManager->get($hydratorName);
+        } else {
+            $hydrator = new ClassMethods();
         }
 
         $resource->setHydrator($hydrator);
