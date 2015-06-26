@@ -6,10 +6,12 @@
 
 namespace Zoho\Subscriptions\Service;
 
+use Traversable;
 use DomainException;
 use Zend\Http;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterAwareTrait;
+use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 use Zoho\Subscriptions\Entity\EntityInterface;
 
@@ -198,6 +200,9 @@ class Resource implements InputFilterAwareInterface
     {
         curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
         $result = curl_exec($this->curl);
+
+        $api_response_info = curl_getinfo($this->curl);
+
         $result = json_decode($result);
         curl_close($this->curl);
         $entityName = $this->getEntityName();
@@ -206,28 +211,64 @@ class Resource implements InputFilterAwareInterface
     }
 
     /**
-     * @param EntityInterface $entity
+     * @param mixed $data
      * @return EntityInterface
      */
-    public function create(EntityInterface $entity)
+    public function create($data)
     {
-        $this->httpClient->setMethod(Http\Request::METHOD_POST)
-                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath());
-        $this->processData($entity);
-        return $this->processRequest();
+        if ($data instanceof EntityInterface) {
+            $data = $this->getHydrator()->extract($data);
+        } elseif ($data instanceof Traversable) {
+            $data = ArrayUtils::iteratorToArray($data);
+        }
+
+        if (!is_array($data)) {
+            // throw 422
+        }
+
+        $fields = http_build_query($data);
+
+        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath());
+        curl_setopt($this->curl, CURLOPT_POST, count($data));
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $fields);
+
+        $result = curl_exec($this->curl);
+        $result = json_decode($result);
+        curl_close($this->curl);
+
+        $entityName = $this->getEntityName();
+        return $result->$entityName;
+
     }
 
     /**
      * @param $id
-     * @param EntityInterface $entity
+     * @param mixed $data
      * @return EntityInterface
      */
-    public function update($id, EntityInterface $entity)
+    public function update($id, $data)
     {
-        $this->httpClient->setMethod(Http\Request::METHOD_PUT)
-                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
-        $this->processData($entity);
-        return $this->processRequest();
+        if ($data instanceof EntityInterface) {
+            $data = $this->getHydrator()->extract($data);
+        } elseif ($data instanceof Traversable) {
+            $data = ArrayUtils::iteratorToArray($data);
+        }
+
+        if (!is_array($data)) {
+            // throw 422
+        }
+        $fields = http_build_query($data);
+
+        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $fields);
+
+        $result = curl_exec($this->curl);
+        $result = json_decode($result);
+        curl_close($this->curl);
+
+        $entityName = $this->getEntityName();
+        return $result->$entityName;
     }
 
     /**
@@ -236,20 +277,10 @@ class Resource implements InputFilterAwareInterface
      */
     public function delete($id)
     {
-        $this->httpClient->setMethod(Http\Request::METHOD_DELETE)
-                         ->setUri(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
-        $response = $this->httpClient->send();
-        if ($response->isSuccess()) {
-            return true;
-        } elseif ($response->isClientError() || $response->isServerError()) {
-            throw new DomainException(
-                sprintf(
-                    'An error occured while requesting Zoho API for %s',
-                    __METHOD__
-                ),
-                $response->getStatusCode()
-            );
-        }
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
+        curl_exec($this->curl);
+        return true;
     }
 
     /**
