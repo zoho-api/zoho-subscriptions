@@ -203,9 +203,15 @@ class Resource implements InputFilterAwareInterface
 
         $result = json_decode($result);
         curl_close($this->curl);
-        $entityName = $this->getEntityName();
-        return $result->$entityName;
 
+        $entityClass = $this->getEntityClass();
+        $entityName = $this->getEntityName();
+        $entity = new $entityClass;
+        $result = $result->$entityName;
+        $data = (array)$result;
+        $entity = $this->getHydrator()->hydrate($data, $entity);
+
+        return $entity;
     }
 
     /**
