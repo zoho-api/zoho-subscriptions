@@ -118,7 +118,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
 
         $hydratorName = str_replace('Entity', 'Hydrator', $entityClass);
 
-        if ($hydratorManager->hast($hydratorName)) {
+        if ($hydratorManager->has($hydratorName)) {
             $hydrator = $hydratorManager->get($hydratorName);
         } else {
             $hydrator = new ClassMethods();
