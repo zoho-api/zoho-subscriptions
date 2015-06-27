@@ -201,11 +201,16 @@ class Resource implements InputFilterAwareInterface
 
         $api_response_info = curl_getinfo($this->curl);
 
-        $result = json_decode($result);
+        $result = json_decode($result, true);
         curl_close($this->curl);
-        $entityName = $this->getEntityName();
-        return $result->$entityName;
 
+        $entityClass = $this->getEntityClass();
+        $entityName = $this->getEntityName();
+        $entity = new $entityClass;
+        $data = $result[$entityName];
+        $entity = $this->getHydrator()->hydrate($data, $entity);
+
+        return $entity;
     }
 
     /**
@@ -232,7 +237,7 @@ class Resource implements InputFilterAwareInterface
 
 
         $response = curl_exec($this->curl);
-        $result = json_decode($response);
+        $result = json_decode($response, true);
         $api_response_info = curl_getinfo($this->curl);
         curl_close($this->curl);
 
@@ -241,8 +246,7 @@ class Resource implements InputFilterAwareInterface
             $entityClass = $this->getEntityClass();
             $entityName = $this->getEntityName();
             $entity = new $entityClass;
-            $result = $result->$entityName;
-            $data = (array)$result;
+            $data = $result[$entityName];
             $entity = $this->getHydrator()->hydrate($data, $entity);
             return $entity;
         }
