@@ -96,13 +96,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $zohoConfig = $config['zoho'];
         $resourceConfig = $config['zoho']['resources'][$requestedName];
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Authorization: Zoho-authtoken ' . $zohoConfig['auth_token'],
-            'X-com-zoho-subscriptions-organizationid: ' . $zohoConfig['organization_id'],
-        ]);
-        $resource = new Resource($curl);
+        $resource = new Resource($zohoConfig['auth_token'], $zohoConfig['organization_id']);
         $resource->setPath($resourceConfig['path']);
         $resource->setCollectionName($resourceConfig['collectionName']);
 

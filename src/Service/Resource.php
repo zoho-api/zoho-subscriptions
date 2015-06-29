@@ -37,6 +37,21 @@ class Resource implements InputFilterAwareInterface
     protected $curl;
 
     /**
+     * @var array
+     */
+    protected $responseInfo;
+
+    /**
+     * @var string
+     */
+    protected $authToken;
+
+    /**
+     * @var string
+     */
+    protected $organizationId;
+
+    /**
      * @var string
      */
     protected $collectionName;
@@ -168,13 +183,68 @@ class Resource implements InputFilterAwareInterface
     }
 
     /**
+     * @return string
+     */
+    public function getAuthToken()
+    {
+        return $this->authToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganizationId()
+    {
+        return $this->organizationId;
+    }
+
+    /**
      * Constructor
      *
      * @param $curl
      */
-    public function __construct($curl)
+    public function __construct($authToken, $organizationId)
     {
-        $this->curl = $curl;
+        $this->authToken      = $authToken;
+        $this->organizationId = $organizationId;
+    }
+
+    protected function request($url, $method = 'GET', $body = null)
+    {
+        $this->curl = curl_init();
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
+            'Authorization: Zoho-authtoken ' . $this->getAuthToken(),
+            'X-com-zoho-subscriptions-organizationid: ' . $this->getOrganizationId(),
+        ]);
+
+        curl_setopt($this->curl, CURLOPT_URL, $url);
+
+        switch ($method) {
+            case 'POST':
+                curl_setopt($this->curl, CURLOPT_POST, true);
+                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $body);
+                break;
+            case 'PUT':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($this->curl, CURLOPT_POSTFIELDS, $body);
+                break;
+            case 'DELETE':
+                curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                break;
+        }
+
+        $result = curl_exec($this->curl);
+        $this->responseInfo = curl_getinfo($this->curl);
+        $result = json_decode($result, true);
+        curl_close($this->curl);
+
+        return $result;
+    }
+
+    protected function getLastResponseHttpCode()
+    {
+        return $this->responseInfo['http_code'];
     }
 
     /**
@@ -182,12 +252,10 @@ class Resource implements InputFilterAwareInterface
      */
     public function fetchAll()
     {
-        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath());
-        $result = curl_exec($this->curl);
-        $result = json_decode($result);
-        curl_close($this->curl);
+        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath());
+
         $collectionName = $this->getCollectionName();
-        return $result->$collectionName;
+        return $result[$collectionName];
     }
 
     /**
@@ -196,13 +264,7 @@ class Resource implements InputFilterAwareInterface
      */
     public function fetch($id)
     {
-        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
-        $result = curl_exec($this->curl);
-
-        $api_response_info = curl_getinfo($this->curl);
-
-        $result = json_decode($result, true);
-        curl_close($this->curl);
+        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
 
         $entityClass = $this->getEntityClass();
         $entityName = $this->getEntityName();
@@ -231,26 +293,17 @@ class Resource implements InputFilterAwareInterface
             throw new DomainException("Unprocessable entity", 422);
         }
 
-        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath());
-        curl_setopt($this->curl, CURLOPT_POST, true);
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $json);
+        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath(), 'POST', $json);
 
-
-        $response = curl_exec($this->curl);
-        $result = json_decode($response, true);
-        $api_response_info = curl_getinfo($this->curl);
-        curl_close($this->curl);
-
-        if ($api_response_info['http_code'] == 201) {
-            //print_r($result);exit;
+        if ($this->getLastResponseHttpCode() == 201) {
             $entityClass = $this->getEntityClass();
-            $entityName = $this->getEntityName();
+            $entityName  = $this->getEntityName();
             $entity = new $entityClass;
             $data = $result[$entityName];
             $entity = $this->getHydrator()->hydrate($data, $entity);
             return $entity;
         }
-        throw new DomainException($result->message, $api_response_info['http_code']);
+        throw new DomainException($result->message, $this->getLastResponseHttpCode());
 
     }
 
@@ -272,16 +325,10 @@ class Resource implements InputFilterAwareInterface
         }
         $fields = http_build_query($data);
 
-        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $fields);
-
-        $result = curl_exec($this->curl);
-        $result = json_decode($result);
-        curl_close($this->curl);
+        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id, 'PUT', $fields);
 
         $entityName = $this->getEntityName();
-        return $result->$entityName;
+        return $result[$entityName];
     }
 
     /**
@@ -290,9 +337,7 @@ class Resource implements InputFilterAwareInterface
      */
     public function delete($id)
     {
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($this->curl, CURLOPT_URL, self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
-        curl_exec($this->curl);
+        $this->request(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id, 'DELETE');
         return true;
     }
 }
