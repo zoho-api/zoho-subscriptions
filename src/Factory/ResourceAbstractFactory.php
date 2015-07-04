@@ -104,9 +104,11 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $resource->setEntityClass($entityClass);
         $resource->setEntityName($resourceConfig['entityName']);
 
-        $inputFilterFactory = new InputFilterFactory();
-        $inputFilter = $inputFilterFactory->createInputFilter($resourceConfig['input-filter']);
-        $resource->setInputFilter($inputFilter);
+        if (isset($resourceConfig['input-filter']) && is_array($resourceConfig['input-filter'])) {
+            $inputFilterFactory = new InputFilterFactory();
+            $inputFilter = $inputFilterFactory->createInputFilter($resourceConfig['input-filter']);
+            $resource->setInputFilter($inputFilter);
+        }
 
         $hydratorManager = $serviceLocator->get('HydratorManager');
 
