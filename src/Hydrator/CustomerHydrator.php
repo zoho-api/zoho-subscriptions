@@ -3,7 +3,7 @@
 namespace Zoho\Subscriptions\Hydrator;
 
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
-use Zend\Stdlib\Hydrator\Strategy\DateTimeFormatterStrategy;
+use Zoho\Subscriptions\Hydrator\Strategy\DateTimeFormatterStrategy;
 use Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy;
 
 class CustomerHydrator extends ClassMethodsHydrator
