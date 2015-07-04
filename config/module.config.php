@@ -132,16 +132,9 @@ return [
                 'entityName' => 'plan',
                 'input-filter' => [
                     0 => [
-                        'name' => 'name',
+                        'name' => 'plan_code',
                         'required' => true,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\Validator\StringLength',
-                                'options' => [
-                                    'min' => 1,
-                                ],
-                            ]
-                        ],
+                        'validators' => [],
                         'filters' => [
                             0 => [
                                 'name' => 'Zend\Filter\StringTrim',
@@ -152,8 +145,21 @@ return [
                         ],
                     ],
                     1 => [
-                        'name' => 'recurringPrice',
-                        'required' => false,
+                        'name' => 'name',
+                        'required' => true,
+                        'validators' => [],
+                        'filters' => [
+                            0 => [
+                                'name' => 'Zend\Filter\StringTrim',
+                            ],
+                            1 => [
+                                'name' => 'Zend\Filter\StripTags',
+                            ],
+                        ],
+                    ],
+                    2 => [
+                        'name' => 'recurring_price',
+                        'required' => true,
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\I18n\Validator\IsFloat',
@@ -171,9 +177,9 @@ return [
                             ],
                         ],
                     ],
-                    2 => [
+                    3 => [
                         'name' => 'interval',
-                        'required' => false,
+                        'required' => true,
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\I18n\Validator\IsInt',
@@ -191,17 +197,14 @@ return [
                             ],
                         ],
                     ],
-                    3 => [
+                    4 => [
                         'name' => 'intervalUnit',
                         'required' => false,
                         'validators' => [
                             0 => [
                                 'name' => 'Zend\Validator\InArray',
                                 'options' => [
-                                    'haystack' => [
-                                        0 => 'months',
-                                        1 => 'years',
-                                    ],
+                                    'haystack' => ['months','years'],
                                 ],
                             ],
                         ],
@@ -214,54 +217,9 @@ return [
                             ],
                         ],
                     ],
-                    4 => [
-                        'name' => 'billingCycles',
-                        'required' => false,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
                     5 => [
-                        'name' => 'trialPeriod',
-                        'required' => false,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    6 => [
-                        'name' => 'setupFee',
-                        'required' => false,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                    7 => [
-                        'name' => 'productId',
-                        'required' => false,
+                        'name' => 'product_id',
+                        'required' => true,
                         'validators' => [
                             'validators' => [
                                 0 => [
@@ -289,50 +247,7 @@ return [
                             ],
                         ],
                     ],
-                    8 => [
-                        'name' => 'taxId',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\Validator\Digits',
-                            ],
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                            2 => [
-                                'name' => 'Zend\Filter\Digits',
-                            ],
-                        ],
-                    ],
-                    9 => [
-                        'name' => 'status',
-                        'required' => false,
-                        'validators' => [
-                            0 => [
-                                'name' => 'Zend\Validator\InArray',
-                                'options' => [
-                                    'haystack' => [
-                                        0 => 'active',
-                                        1 => 'inactive',
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'filters' => [
-                            0 => [
-                                'name' => 'Zend\Filter\StringTrim',
-                            ],
-                            1 => [
-                                'name' => 'Zend\Filter\StripTags',
-                            ],
-                        ],
-                    ],
-                ]
+                ],
             ],
             'Zoho\Subscriptions\Resource\Addon' => [
                 'path' => '/addons',
