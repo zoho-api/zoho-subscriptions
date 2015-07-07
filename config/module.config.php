@@ -130,6 +130,7 @@ return [
                 'path' => '/plans',
                 'collectionName' => 'plans',
                 'entityName' => 'plan',
+                'input-filter' => [],
             ],
             'Zoho\Subscriptions\Resource\Addon' => [
                 'path' => '/addons',
@@ -152,18 +153,7 @@ return [
                 'path' => '/coupons',
                 'collectionName' => 'coupons',
                 'entityName' => 'coupon',
-                'input-filter' => [
-                    0 => [
-                        'name' => '',
-                        'required' => true,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-
-                        ],
-                    ],
-                ]
+                'input-filter' => [],
             ],
             'Zoho\Subscriptions\Resource\Customer' => [
                 'path' => '/customers',
@@ -670,52 +660,19 @@ return [
                 'path' => '/invoices',
                 'collectionName' => 'invoices',
                 'entityName' => 'invoice',
-                'input-filter' => [
-                    0 => [
-                        'name' => '',
-                        'required' => true,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-
-                        ],
-                    ],
-                ]
+                'input-filter' => [],
             ],
             'Zoho\Subscriptions\Resource\Payment' => [
                 'path' => '/payments',
                 'collectionName' => 'payments',
                 'entityName' => 'payment',
-                'input-filter' => [
-                    0 => [
-                        'name' => '',
-                        'required' => true,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-
-                        ],
-                    ],
-                ]
+                'input-filter' => [],
             ],
             'Zoho\Subscriptions\Resource\HostedPage' => [
                 'path' => '/hostedpages',
                 'collectionName' => 'hostedpages',
                 'entityName' => 'hostedpage',
-                'input-filter' => [
-                    0 => [
-                        'name' => '',
-                        'required' => true,
-                        'validators' => [
-
-                        ],
-                        'filters' => [
-
-                        ],
-                    ],
-                ]
+                'input-filter' => [],
             ],
 
         ]
