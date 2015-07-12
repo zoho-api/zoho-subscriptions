@@ -248,11 +248,18 @@ class Resource implements InputFilterAwareInterface
     }
 
     /**
+     * @param array $options The options to add to the query
      * @return array
      */
-    public function fetchAll()
+    public function fetchAll($options = [])
     {
-        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath());
+        $url = self::ZOHO_API_ENDPOINT . $this->getPath();
+
+        if (!empty($options)) {
+            $url .= '?' . http_build_query($options);
+        }
+
+        $result = $this->request($url);
 
         $collectionName = $this->getCollectionName();
         return $result[$collectionName];
