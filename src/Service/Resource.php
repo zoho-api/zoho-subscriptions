@@ -262,7 +262,15 @@ class Resource implements InputFilterAwareInterface
         $result = $this->request($url);
 
         $collectionName = $this->getCollectionName();
-        return $result[$collectionName];
+        $collection     = $result[$collectionName];
+        $entityClass    = $this->getEntityClass();
+        $resultList     = [];
+
+        foreach ($collection as $member) {
+            $resultList[] = $this->getHydrator()->hydrate($member, new $entityClass());
+        }
+
+        return $resultList;
     }
 
     /**

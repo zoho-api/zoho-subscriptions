@@ -54,6 +54,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, Hy
         return [
             'invokables' => [
                 'Zoho\Subscriptions\Hydrator\Customer' => 'Zoho\Subscriptions\Hydrator\CustomerHydrator',
+                'Zoho\Subscriptions\Hydrator\Subscription' => 'Zoho\Subscriptions\Hydrator\SubscriptionHydrator',
             ]
         ];
     }
