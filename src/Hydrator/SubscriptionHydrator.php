@@ -11,8 +11,6 @@ class SubscriptionHydrator extends ClassMethodsHydrator
     {
         parent::__construct();
 
-        error_log('test');
-
         $datetimeStrategy = new DateTimeFormatterStrategy(\DateTime::ISO8601);
         $this->addStrategy('created_time', $datetimeStrategy);
         $this->addStrategy('updated_time', $datetimeStrategy);
