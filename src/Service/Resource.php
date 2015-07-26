@@ -281,6 +281,10 @@ class Resource implements InputFilterAwareInterface
     {
         $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id);
 
+        if ($this->getLastResponseHttpCode() != 200) {
+            throw new DomainException('Not found.');
+        }
+
         $entityClass = $this->getEntityClass();
         $entityName = $this->getEntityName();
         $entity = new $entityClass;
