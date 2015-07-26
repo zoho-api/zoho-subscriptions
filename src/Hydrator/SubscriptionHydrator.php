@@ -3,7 +3,10 @@
 namespace Zoho\Subscriptions\Hydrator;
 
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zoho\Subscriptions\Hydrator\Strategy\CardStrategy;
+use Zoho\Subscriptions\Hydrator\Strategy\CustomerStrategy;
 use Zoho\Subscriptions\Hydrator\Strategy\DateTimeFormatterStrategy;
+use Zoho\Subscriptions\Hydrator\Strategy\PlanStrategy;
 
 class SubscriptionHydrator extends ClassMethodsHydrator
 {
@@ -12,7 +15,13 @@ class SubscriptionHydrator extends ClassMethodsHydrator
         parent::__construct();
 
         $datetimeStrategy = new DateTimeFormatterStrategy(\DateTime::ISO8601);
+        $planStrategy = new PlanStrategy();
+        $cardStrategy = new CardStrategy();
+        $customerStrategy = new CustomerStrategy();
         $this->addStrategy('created_time', $datetimeStrategy);
         $this->addStrategy('updated_time', $datetimeStrategy);
+        $this->addStrategy('plan', $planStrategy);
+        $this->addStrategy('card', $cardStrategy);
+        $this->addStrategy('customer', $customerStrategy);
     }
 }

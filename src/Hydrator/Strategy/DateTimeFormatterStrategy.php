@@ -63,6 +63,8 @@ class DateTimeFormatterStrategy implements StrategyInterface
      */
     public function hydrate($value)
     {
+        error_log($value);
+
         if ($value === '' || $value === null) {
             return;
         }
