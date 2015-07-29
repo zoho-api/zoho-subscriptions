@@ -25,7 +25,7 @@ class AddressStrategy implements StrategyInterface
      */
     public function extract($value)
     {
-        if (!$value instanceof AddressEntity) {
+        if (!is_null($value) && !$value instanceof AddressEntity) {
             throw new \InvalidArgumentException("Invalid address.");
         }
 
