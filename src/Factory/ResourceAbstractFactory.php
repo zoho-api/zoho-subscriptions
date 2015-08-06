@@ -100,7 +100,10 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
         $resource->setPath($resourceConfig['path']);
         $resource->setCollectionName($resourceConfig['collectionName']);
 
-        $entityClass = str_replace('Resource', 'Entity', $requestedName);
+        $entityClass = array_key_exists('entityClass', $resourceConfig) ?
+            $resourceConfig['entityClass']:
+            str_replace('Resource', 'Entity', $requestedName);
+
         $resource->setEntityClass($entityClass);
         $resource->setEntityName($resourceConfig['entityName']);
 
