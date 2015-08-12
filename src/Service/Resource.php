@@ -282,6 +282,10 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
 
         $result = $this->request($url);
 
+        if ($this->getLastResponseHttpCode() != 200) {
+            throw new DomainException('Not found.');
+        }
+
         $collectionName = $this->getCollectionName();
         $collection     = $result[$collectionName];
         $entityClass    = $this->getEntityClass();
