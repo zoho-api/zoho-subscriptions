@@ -67,14 +67,17 @@ class DateTimeFormatterStrategy implements StrategyInterface
             return;
         }
 
+        $format = $this->format;
+
         if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
-            $this->format = 'Y-m-d';
+            $format = 'Y-m-d H:i:s';
+            $value .= ' 00:00:00';
         }
 
         if ($this->timezone) {
-            $hydrated = DateTime::createFromFormat($this->format, $value, $this->timezone);
+            $hydrated = DateTime::createFromFormat($format, $value, $this->timezone);
         } else {
-            $hydrated = DateTime::createFromFormat($this->format, $value);
+            $hydrated = DateTime::createFromFormat($format, $value);
         }
 
         return $hydrated ?: $value;

@@ -23,5 +23,7 @@ class SubscriptionHydrator extends ClassMethodsHydrator
         $this->addStrategy('plan', $planStrategy);
         $this->addStrategy('card', $cardStrategy);
         $this->addStrategy('customer', $customerStrategy);
+        $this->addStrategy('current_term_starts_at', $datetimeStrategy);
+        $this->addStrategy('current_term_ends_at', $datetimeStrategy);
     }
 }
