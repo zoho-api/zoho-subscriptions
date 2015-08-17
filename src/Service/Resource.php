@@ -347,7 +347,7 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             $entity = $this->getHydrator()->hydrate($data, $entity);
             return $entity;
         }
-        throw new DomainException($result->message, $this->getLastResponseHttpCode());
+        throw new DomainException($result && is_object($result) ? $result->message : "Couldn't create the resource.", $this->getLastResponseHttpCode());
 
     }
 
