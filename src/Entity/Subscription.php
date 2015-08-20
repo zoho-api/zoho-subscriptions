@@ -325,7 +325,7 @@ class Subscription implements EntityInterface
      * @param Customer $customer
      * @return Subscription
      */
-    public function setCustomer(Customer $customer)
+    public function setCustomer(Customer $customer = null)
     {
         $this->customer = $customer;
         return $this;
@@ -347,7 +347,7 @@ class Subscription implements EntityInterface
      * @param array $contactpersons
      * @return Subscription
      */
-    public function setContactpersons(array $contactpersons)
+    public function setContactpersons(array $contactpersons = null)
     {
         $this->contactpersons = $contactpersons;
         return $this;
@@ -413,7 +413,7 @@ class Subscription implements EntityInterface
      * @param Plan $plan
      * @return Subscription
      */
-    public function setPlan(Plan $plan)
+    public function setPlan(Plan $plan = null)
     {
         $this->plan = $plan;
         return $this;
@@ -435,7 +435,7 @@ class Subscription implements EntityInterface
      * @param array $addons
      * @return Subscription
      */
-    public function setAddons(array $addons)
+    public function setAddons(array $addons = null)
     {
         $this->addons = $addons;
         return $this;
@@ -457,7 +457,7 @@ class Subscription implements EntityInterface
      * @param Coupon $coupon
      * @return Subscription
      */
-    public function setCoupon(Coupon $coupon)
+    public function setCoupon(Coupon $coupon = null)
     {
         $this->coupon = $coupon;
         return $this;
@@ -479,7 +479,7 @@ class Subscription implements EntityInterface
      * @param array $customFields
      * @return Subscription
      */
-    public function setCustomFields(array $customFields)
+    public function setCustomFields(array $customFields = null)
     {
         $this->customFields = $customFields;
         return $this;
@@ -633,7 +633,7 @@ class Subscription implements EntityInterface
      * @param float $exchangeRate
      * @return Subscription
      */
-    public function setExchangeRate(float $exchangeRate)
+    public function setExchangeRate($exchangeRate)
     {
         $this->exchangeRate = $exchangeRate;
         return $this;
@@ -743,7 +743,7 @@ class Subscription implements EntityInterface
      * @param Card $card
      * @return Subscription
      */
-    public function setCard(Card $card)
+    public function setCard(Card $card = null)
     {
         $this->card = $card;
         return $this;
@@ -1007,7 +1007,7 @@ class Subscription implements EntityInterface
      * @param array $notes
      * @return Subscription
      */
-    public function setNotes(array $notes)
+    public function setNotes(array $notes = null)
     {
         $this->notes = $notes;
         return $this;
