@@ -347,6 +347,11 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             $entity = $this->getHydrator()->hydrate($data, $entity);
             return $entity;
         }
+
+        if ($this->getLastResponseHttpCode() == 429) {
+            throw new Exception(Exception::TYPE_TOO_MANY_REQUESTS, 'Too many Requests', 'Zoho Subscriptions is currently not available because of too many requests.');
+        }
+
         throw new DomainException($result && is_object($result) ? $result->message : "Couldn't create the resource.", $this->getLastResponseHttpCode());
 
     }
