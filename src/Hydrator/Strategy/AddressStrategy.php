@@ -25,11 +25,13 @@ class AddressStrategy implements StrategyInterface
      */
     public function extract($value)
     {
-        if (!is_array($value)) {
-            return $value;
+        if (!$value instanceof AddressEntity) {
+            throw new \InvalidArgumentException("Invalid address.");
         }
-        $hydrator = new ClassMethods(true);
-        return $hydrator->hydrate($value, new AddressEntity());
+
+        $hydrator = new ClassMethods(false);
+
+        return $hydrator->extract($value);
     }
 
     /**

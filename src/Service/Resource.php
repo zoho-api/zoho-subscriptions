@@ -11,6 +11,8 @@ use DomainException;
 use Zend\Http;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterAwareTrait;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 use Zoho\Subscriptions\Entity\EntityInterface;
@@ -20,9 +22,10 @@ use Zoho\Subscriptions\Entity\EntityInterface;
  *
  * @package Zoho\Subscriptions\Service
  */
-class Resource implements InputFilterAwareInterface
+class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterface
 {
     use InputFilterAwareTrait;
+    use ServiceLocatorAwareTrait;
 
     const ZOHO_API_ENDPOINT = 'https://subscriptions.zoho.com/api/v1';
 
@@ -212,6 +215,18 @@ class Resource implements InputFilterAwareInterface
     protected function request($url, $method = 'GET', $body = null)
     {
         $this->curl = curl_init();
+
+        $zohoConfig = $this->getServiceLocator()->get('config')['zoho'];
+
+        if (array_key_exists('connection_timeout_milliseconds', $zohoConfig) &&
+            !empty($zohoConfig['connection_timeout_milliseconds']))
+        {
+            curl_setopt(
+                $this->curl, CURLOPT_CONNECTTIMEOUT_MS,
+                $this->getServiceLocator()->get('config')['zoho']['connection_timeout_milliseconds']
+            );
+        }
+
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'Authorization: Zoho-authtoken ' . $this->getAuthToken(),
@@ -235,8 +250,14 @@ class Resource implements InputFilterAwareInterface
         }
 
         $result = curl_exec($this->curl);
+
+        if (!$result) {
+            throw new Exception(Exception::TYPE_GATEWAY_TIMEOUT, 'Timeout', 'Zoho Subscriptions is currently unreachable.');
+        }
+
         $this->responseInfo = curl_getinfo($this->curl);
         $result = json_decode($result, true);
+
         curl_close($this->curl);
 
         return $result;
@@ -260,6 +281,10 @@ class Resource implements InputFilterAwareInterface
         }
 
         $result = $this->request($url);
+
+        if ($this->getLastResponseHttpCode() != 200) {
+            throw new DomainException('Not found.');
+        }
 
         $collectionName = $this->getCollectionName();
         $collection     = $result[$collectionName];
@@ -322,7 +347,7 @@ class Resource implements InputFilterAwareInterface
             $entity = $this->getHydrator()->hydrate($data, $entity);
             return $entity;
         }
-        throw new DomainException($result->message, $this->getLastResponseHttpCode());
+        throw new DomainException($result && is_object($result) ? $result->message : "Couldn't create the resource.", $this->getLastResponseHttpCode());
 
     }
 
