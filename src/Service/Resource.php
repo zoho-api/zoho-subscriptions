@@ -253,6 +253,8 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
 
         if (!$result) {
             throw new Exception(Exception::TYPE_GATEWAY_TIMEOUT, 'Timeout', 'Zoho Subscriptions is currently unreachable.');
+        } else if ($this->getLastResponseHttpCode() == 429) {
+            throw new Exception(Exception::TYPE_TOO_MANY_REQUESTS, 'Too many Requests', 'Zoho Subscriptions is currently not available because of too many requests.');
         }
 
         $this->responseInfo = curl_getinfo($this->curl);
@@ -348,12 +350,7 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             return $entity;
         }
 
-        if ($this->getLastResponseHttpCode() == 429) {
-            throw new Exception(Exception::TYPE_TOO_MANY_REQUESTS, 'Too many Requests', 'Zoho Subscriptions is currently not available because of too many requests.');
-        }
-
         throw new DomainException($result && is_object($result) ? $result->message : "Couldn't create the resource.", $this->getLastResponseHttpCode());
-
     }
 
     /**
