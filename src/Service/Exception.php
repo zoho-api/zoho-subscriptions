@@ -22,7 +22,8 @@ namespace Zoho\Subscriptions\Service;
  */
 class Exception extends \Exception
 {
-    const TYPE_GATEWAY_TIMEOUT = 'gateway_timeout';
+    const TYPE_GATEWAY_TIMEOUT   = 'gateway_timeout';
+    const TYPE_TOO_MANY_REQUESTS = 'too_many_requests';
 
     protected $type;
     protected $errorMessage;
