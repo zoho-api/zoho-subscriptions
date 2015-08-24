@@ -676,5 +676,64 @@ return [
             ],
 
         ]
-    ]
+    ],
+    'router' =>
+        [
+            'routes' =>
+                [
+                    'webhook' =>
+                        [
+                            'type' => 'literal',
+                            'options' =>
+                                [
+                                    'route' => '/webhooks'
+                                ],
+                            'child_routes' =>
+                                [
+                                    'subscription' =>
+                                        [
+                                            'type' => 'literal',
+                                            'options' =>
+                                                [
+                                                    'route' => '/subscriptions',
+                                                    'defaults' =>
+                                                        [
+                                                            '__NAMESPACE__' => 'Zoho\Webhook',
+                                                            'controller' => 'subscription',
+                                                            'action' => 'callback'
+                                                        ]
+                                                ]
+                                        ],
+                                    'payment' =>
+                                        [
+                                            'type' => 'literal',
+                                            'options' =>
+                                                [
+                                                    'route' => '/payments',
+                                                    'defaults' =>
+                                                        [
+                                                            '__NAMESPACE__' => 'Zoho\Webhook',
+                                                            'controller' => 'payment',
+                                                            'action' => 'callback'
+                                                        ]
+                                                ]
+                                        ],
+                                    'invoice' =>
+                                        [
+                                            'type' => 'literal',
+                                            'options' =>
+                                                [
+                                                    'route' => '/invoices',
+                                                    'defaults' =>
+                                                        [
+                                                            '__NAMESPACE__' => 'Zoho\Webhook',
+                                                            'controller' => 'invoice',
+                                                            'action' => 'callback'
+                                                        ]
+                                                ]
+                                        ],
+                                ]
+                        ]
+                ]
+        ]
 ];
