@@ -29,6 +29,11 @@ class Exception extends \Exception
     protected $errorMessage;
     protected $errorDetails;
 
+    /**
+     * @param string $type
+     * @param int $errorMessage
+     * @param string $errorDetails
+     */
     public function __construct($type, $errorMessage, $errorDetails)
     {
         $this->type = $type;
@@ -38,6 +43,7 @@ class Exception extends \Exception
 
     /**
      * @param string $errorDetails
+     * @return Exception
      */
     public function setErrorDetails($errorDetails)
     {
@@ -55,6 +61,7 @@ class Exception extends \Exception
 
     /**
      * @param string $errorMessage
+     * @return Exception
      */
     public function setErrorMessage($errorMessage)
     {
@@ -72,6 +79,7 @@ class Exception extends \Exception
 
     /**
      * @param string $type
+     * @return Exception
      */
     public function setType($type)
     {

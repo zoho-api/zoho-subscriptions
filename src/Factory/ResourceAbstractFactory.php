@@ -6,12 +6,13 @@
 
 namespace Zoho\Subscriptions\Factory;
 
-use Zend\Http\Client;
 use Zend\InputFilter\Factory as InputFilterFactory;
 use Zend\ServiceManager\AbstractFactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
 use Zoho\Subscriptions\Entity\EntityInterface;
 use Zoho\Subscriptions\Service\Resource;
 
@@ -121,6 +122,22 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
             $hydrator = $hydratorManager->get($hydratorName);
         } else {
             $hydrator = new ClassMethods();
+        }
+
+        if (isset($resourceConfig['strategies'])) {
+            foreach ($resourceConfig['strategies'] as $field => $strategyKey) {
+                if (!$serviceLocator->has($strategyKey)) {
+                    throw new ServiceNotCreatedException(sprintf('Invalid strategy %s for field %s', $strategyKey, $field));
+                }
+
+                $strategy = $serviceLocator->get($strategyKey);
+                if (!$strategy instanceof StrategyInterface) {
+                    throw new ServiceNotCreatedException(sprintf('Invalid strategy class %s for field %s', get_class($strategy), $field));
+                }
+
+                $hydrator->addStrategy($field, $strategy);
+            }
+
         }
 
         $resource->setHydrator($hydrator);
